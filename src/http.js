@@ -3,7 +3,7 @@ import zip from 'lodash.zipobject'
 
 import 'isomorphic-fetch'
 
-const BASE = 'https://api.binance.com'
+let apiUrl = 'https://api.binance.com'
 
 /**
  * Build query string for uri encoded url based on json object
@@ -57,7 +57,7 @@ const checkParams = (name, payload, requires = []) => {
  */
 const publicCall = (path, data, method = 'GET', headers = {}) =>
   sendResult(
-    fetch(`${BASE}/api${path}${makeQueryString(data)}`, {
+    fetch(`${apiUrl}/api${path}${makeQueryString(data)}`, {
       method,
       json: true,
       headers,
@@ -119,7 +119,7 @@ const privateCall = ({ apiKey, apiSecret }) => (
 
     return sendResult(
       fetch(
-        `${BASE}${path.includes('/wapi') ? '' : '/api'}${path}${noData
+        `${apiUrl}${path.includes('/wapi') ? '' : '/api'}${path}${noData
           ? ''
           : makeQueryString(newData)}`,
         {
@@ -202,6 +202,9 @@ export default opts => {
   const kCall = keyCall(opts)
 
   return {
+    setApiUrl: url => {
+      apiUrl = url
+    },
     ping: () => publicCall('/v1/ping').then(() => true),
     time: () => publicCall('/v1/time').then(r => r.serverTime),
     exchangeInfo: () => publicCall('/v1/exchangeInfo'),
