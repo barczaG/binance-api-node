@@ -32,6 +32,7 @@ declare module 'binance-api-node' {
     }
 
     export interface Binance {
+        setApiUrl(url: string): void
         accountInfo(options?: { useServerTime: boolean }): Promise<Account>;
         aggTrades(options?: { symbol: string, fromId?: string, startTime?: number, endTime?: number, limit?: number }): Promise<AggregatedTrade[]>;
         allBookTickers(): Promise<{ [key: string]: Ticker }>;
